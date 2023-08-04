@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+<!-- 1단계 각 클래스를 bean으로 선언하여 사용 -->
+<!-- <bean id="myUser01" class="com.min.edu.anno06.UserDto">
+	<constructor-arg value="윌슨" />
+</bean>
+<bean id="userServiceImpl" class="com.min.edu.anno06.UserServiceImpl" /> -->
+
+
+
+<!-- 
+	2단계 UserServiceImpl에서 @Autowired를 통해서 연결
+	주입의 Annotation인 @Autowire @Resource를 자동 등록하기 위해서 <context:annotation-config />을 통해 가능
+	하지만 bean을 등록해주는 것은 아님 
+-->
+<!-- <context:annotation-config />
+<bean id="myUser01" class="com.min.edu.anno06.UserDto">
+	<constructor-arg value="윌슨" />
+</bean>
+<bean id="userServiceImpl" class="com.min.edu.anno06.UserServiceImpl" /> -->
+
+
+
+<!-- 
+	3단계 UserServiceImpl을 @Component를 통해서 bean으로 등록해서 사용 
+	<context:component-scan>을 통해 base-package 하위 모든 stereotype을 bean으로 등록
+	다른 annotation도 사용할 수 있도록 해줌	
+-->
+	<context:component-scan base-package="com.min.edu.anno06" />
+	<bean id="ud01" class="com.min.edu.anno06.UserDto">
+		<constructor-arg value="하늘" />
+	</bean>
+</beans>

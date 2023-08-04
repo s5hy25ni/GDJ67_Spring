@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- default 생성자로 선언된 EmployeeAddress -->
+	<bean id="myAddr01" class="com.min.edu.bean2.EmployeeAddress"/>
+	
+	<!-- 클래스의 get/set를 통해서 객체의 값 입력 -->
+	<bean id="myAddr02" class="com.min.edu.bean2.EmployeeAddress">
+		<property name="name" value="메리" />
+		<property name="address" value="영국" />
+		<property name="phone" value="11" />
+	</bean>
+	
+	<!-- 클래스의 get/set를 통해서 객체의 값 입력 -->
+	<bean id="myAddr03" class="com.min.edu.bean2.EmployeeAddress">
+		<property name="name" value="가연" />
+		<property name="address" value="한국" />
+		<property name="phone" value="12" />
+	</bean>
+	
+	<!-- 생성된 bean을 통한 입력 DI -->
+	<bean id="dev" class="com.min.edu.bean2.JobAddress">
+		<constructor-arg ref="myAddr03" />
+		<constructor-arg value="개발자"/>
+	</bean>
+	
+	<bean id="sing" class="com.min.edu.bean2.JobAddress">
+		<constructor-arg ref="myAddr02" />
+		<constructor-arg value="영국가수"/>
+	</bean>
+	
+	<!-- 
+		개발에서는 생성된 빈을 주입(dependency Injection)
+		@Autowired, @Resource를 통해서 연결	
+	-->
+
+</beans>

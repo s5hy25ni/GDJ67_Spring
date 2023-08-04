@@ -1,0 +1,6 @@
+anno02 설명
+
+Spring Bean Configuration을 통해서
+xml 파일에 <bean>을 통해서 POJO를 spring bean으로 작성하여 사용
+
+각각의 bean은 xml에 문법에서 연결시 ref를 통해서 연결하면 bean이 서로 연결되어 사용된다.

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beansProjectDescription>
+	<version>1</version>
+	<pluginVersion><![CDATA[3.9.22.202204280911-RELEASE]]></pluginVersion>
+	<configSuffixes>
+		<configSuffix><![CDATA[xml]]></configSuffix>
+	</configSuffixes>
+	<enableImports><![CDATA[false]]></enableImports>
+	<configs>
+		<config>src/main/java/com/min/edu/anno02/anno02_bean.xml</config>
+		<config>src/main/java/com/min/edu/anno03/anno03_bean.xml</config>
+		<config>src/main/java/com/min/edu/anno04/anno04_bean.xml</config>
+		<config>src/main/java/com/min/edu/anno05/anno05_bean.xml</config>
+		<config>src/main/java/com/min/edu/anno06/anno06_beam.xml</config>
+	</configs>
+	<autoconfigs>
+	</autoconfigs>
+	<configSets>
+	</configSets>
+</beansProjectDescription>

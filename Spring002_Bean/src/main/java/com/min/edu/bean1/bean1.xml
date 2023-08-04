@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<!-- POJO의 생성 -->
+<!-- 2) default 생성자를 통한 bean 선언 -->
+<bean id="Kenya" class="com.min.edu.bean1.MessageBeanImpl" />
+
+<!-- 2) 생성자 오버로딩을 통한 bean 선언 -->
+<bean id="Americano" class="com.min.edu.bean1.MessageBeanImpl">
+	<constructor-arg>
+		<value>Americano</value>
+	</constructor-arg>
+	<constructor-arg value="2000"/>
+</bean>
+
+<!-- 3) argument의 순서를 통해서 bean 선언 -->
+<bean id="Arabica" class="com.min.edu.bean1.MessageBeanImpl">
+	<constructor-arg index="1" value="3000 "/>
+	<constructor-arg index="0" value="Arabica" />
+</bean>
+
+</beans>

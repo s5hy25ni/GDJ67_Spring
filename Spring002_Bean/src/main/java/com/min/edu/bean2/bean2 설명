@@ -1,0 +1,4 @@
+bean2 설명
+
+Spring Container에 의해 생성된 bean은 Container 밖에 있는 외부의 POJO와 연결할 수 있다.
+따라서 Bean을 생성하여 ref(주소, 이름)를 통하여 연결할 수 있다.

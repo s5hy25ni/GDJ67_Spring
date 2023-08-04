@@ -1,0 +1,5 @@
+bean1 설명
+
+기존의 방식은 작성된 Class를 사용하기 위해서 new 예약어를 통해서 객체를 생성한 후 사용
+하지만 Spring framework에서는 Spring Container에 의해 설정된 xml 혹은 Annotation을 통해서 자동으로 생성
+생성된 객체는 static final, Spring Container에 의해 호출될 수 있음(IoC)

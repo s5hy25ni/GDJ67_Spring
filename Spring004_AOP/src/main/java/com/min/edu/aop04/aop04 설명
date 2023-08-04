@@ -1,0 +1,9 @@
+AOP04 설명
+
+서버에 java가 두 가지 버전으로 설치되어 있음
+default java JDK 17버전
+java 55버전이란? -> jdk 11버전
+
+java se 17 = 61 (0x3D hex)
+java se 16 = 60 (0x3C hex)
+java se 15 = 59 (0x3B hex)

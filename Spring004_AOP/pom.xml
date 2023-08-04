@@ -13,6 +13,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <org.springframework.version>5.3.20</org.springframework.version>
+    <org.aspect>1.9.9.1</org.aspect>
   </properties>
 
   <dependencies>
@@ -42,6 +43,20 @@
 
 
   	<!-- AOP 라이브러리 -->
+  	<!-- https://mvnrepository.com/artifact/org.aspectj/aspectjrt -->
+	<dependency>
+	    <groupId>org.aspectj</groupId>
+	    <artifactId>aspectjrt</artifactId>
+	    <version>${org.aspect}</version>
+	</dependency>
+	<dependency>
+	    <groupId>org.aspectj</groupId>
+	    <artifactId>aspectjweaver</artifactId>
+	    <version>${org.aspect}</version>
+	</dependency>
+
+
+  	
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>

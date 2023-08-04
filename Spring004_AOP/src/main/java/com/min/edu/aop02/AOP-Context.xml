@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<!-- TODO AOP02 02_04 일반적인 POJO의 객체를 bean으로 사용하기 위해서 등록 -->
+<bean id="employee" class="com.min.edu.aop02.Employee" />
+<bean id="cTO" class="com.min.edu.aop02.CTO" />
+<bean id="myAspect" class="com.min.edu.aop02.CCC_Aspect" />
+
+<!-- 
+	TODO AOP02 02_05 CC와 CCC가 Proxyㄹ르 통해서 객체가 생성되도록 만들어주는 bean 등록 
+	Aspect, Expression, PointCut, Advisor
+-->
+<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" />
+
+<!-- TODO AOP02 02_06 CC와 CCC의 대상을 찾아서 Aspect가 적용되는 target을 만들어준다 -->
+<bean class="org.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor"> <!-- advisor 적용되는 대상, 적용되서 만들어지면 pointCut -->
+	<property name="advice" ref="myAspect"/> 
+	<property name="expression" value="execution(public * * (..))" /> <!-- 모든 반환 타입, 모든 메소드, 모든 아규먼트 --> 
+</bean>
+</beans>

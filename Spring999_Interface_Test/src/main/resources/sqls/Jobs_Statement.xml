@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.min.edu.model.mapper">
+
+	<select id="selectAll" resultType="JobsVo">
+		SELECT JOB_ID, JOB_TITLE, MIN_SALARY , MAX_SALARY 
+			FROM JOBS
+	</select>
+	
+	<update id="updateUseage">
+		UPDATE JOBS SET USEAGE='N'
+	</update>
+	
+	<insert id="insertJob" parameterType="JobsVo">
+		INSERT INTO HR.JOBS
+			(JOB_ID, JOB_TITLE, MIN_SALARY, MAX_SALARY)
+			VALUES('DEV', 'Developer', 10000, 20000)
+	</insert>
+</mapper>

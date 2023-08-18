@@ -1,0 +1,26 @@
+Spring framework 작성 순서
+
+1. Maven 설정
+	- create maven project : maven-archetype-webapp 1.0 생성
+	- pom.xml : 프로젝트의 build 설정
+				maven-compiler-plugin 3.10.1 > jdk 17
+				maven-war-plugin 3.3.2
+	- Maven update
+	- project > fecets 설정
+	
+	
+2. Spring 필요 라이브러리 dependency 작업
+
+
+3. Spring MVC 구조를 주요클래스인 DispactherServlet을 작성
+	- <init-param>의 설정이 되어있지 않다면 default는 <servlet-name>의 값으로 "-servlet.xml"의 이름으로 만듦
+	
+
+4. 3번의 spring bean confingration에 Spring Container가 설정해야할 Tag를 작성한다
+	- context:component-scan base-package=""/>, <mvc:annotaion-driven/>
+
+
+5. 로직이 처리될 Front Controller 클래스를 작성함
+	- base-package 하위의 모든 곳에서 작성
+	- @Contoller를 클래스에서 선언하면 자동으로 찾아서 bean으로 만들어 줌
+	

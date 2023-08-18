@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
+	<context:component-scan base-package="com.min.edu"/>
+	<mvc:annotation-driven/>
+	
+	<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/views/"/>
+		<property name="suffix" value=".jsp"/>
+	</bean>
+
+	<context:property-placeholder location="classpath:properties/oracle.properties" file-encoding="UTF-8"/>
+	
+	<!-- 
+		TODO 11_03 Transaction은 VC동작에서 이루어지기 때문에 반드시 init-param으로 동작되어야 한다.
+					application-context.xml에 있는 TransactionManager를 사용하여 MVC의 동작에 Transaction을 제어한다.
+					
+					Service에서 dao를 조합(dao는 단일의 기능을 만들어낸 유닛, service는 단일의 dao를 조합한 기능)
+					조합된 dao 중 예외발생(SqlException 종류) 했을 경우 Transaction 동작으로
+					service에 조합된 모든 dao를 rollback 처리 한다.
+	-->
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	
+	<!-- 
+		TODO 00_06 application-context.xml에 있는 transactionManager를 사용하여 VC의 동작에 Transaction을 처리 해줌
+	-->
+	<!-- 	<tx:annotation-driven transaction-manager="transactionManager"/> -->
+	<tx:annotation-driven/>
+	
+</beans>

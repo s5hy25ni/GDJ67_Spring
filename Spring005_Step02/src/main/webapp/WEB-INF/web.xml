@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+    
+    <!-- 
+    	TODO 07_01 처음 실행되는 페이지를 Controller의 .do로 변경 
+    				4.3.25.RELEASE 버전에서는 처음에 *.do 호출이 가능
+    				5.x 이상에서는 do 호출이 불가능
+    -->
+    <welcome-file-list>
+    	<welcome-file>home.do</welcome-file>
+    	<welcome-file>index.jsp</welcome-file>
+    	<!-- TODO 07_03 처음 요청되는 페이지 *.do 메일이 아닌 /WEB-INF/views에 위차하여 설정 -->
+    	<welcome-file>/WEB-INF/views/init.jsp</welcome-file>
+    </welcome-file-list>
+    
+    <!-- TODO 16_01 프로젝트 전체에서 사용할 수 있는 값을 가지고 있는 param -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/spring/appServlet/application-context.xml</param-value>
+	</context-param>
+
+	<!-- TODO 16_02 여러개의 같은 context(이름)을 사용하기 위해서 -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+
+	<!-- TODO 01 DispatcherServlet에서 필요로 하는 Spring Bean Configurration 파일을 init-param으로 선언 -->
+	<servlet>
+		<servlet-name>springDispatcherServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>/WEB-INF/spring/appServlet/servlet-context.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	
+	<!-- servlet mapping -->
+	<servlet-mapping>
+		<servlet-name>springDispatcherServlet</servlet-name>
+		<url-pattern>*.do</url-pattern>
+	</servlet-mapping>
+
+	<!-- 
+		TODO 10 servlet의 filter를 통해서 요청(HttpServletRequest와 HttpServletResponse)을 Encoding 처리하여 
+		DispatcherServlet으로 넘겨준다
+	 -->
+	<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+	<!-- 
+		TODO 11 요청한 페이지와 요청의 정보를 출력
+		가로채기(filter)를 통해 요청되는 request 정보 중 Header 정볼르 출력하여 log 작성
+		filter = spring intercepter
+	 -->
+	 <filter>
+	 	<filter-name>accessLogFilter</filter-name>
+	 	<filter-class>com.min.edu.filter.AccessLogFilter</filter-class>
+	 </filter>
+	 <filter-mapping>
+	 	<filter-name>accessLogFilter</filter-name>
+	 	<url-pattern>/*</url-pattern>
+	 </filter-mapping>
+	 
+</web-app>

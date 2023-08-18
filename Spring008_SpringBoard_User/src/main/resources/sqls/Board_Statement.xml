@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.min.edu.model.mapper.BoardDaoImpl">
+
+	<select id="userBoardList" resultType="BoardVo">
+		SELECT SEQ, ID, TITLE, CONTENT, STEP, "DEPTH", "REF", DELFLAG, REGDATE
+			FROM ANSWERBOARD a
+	</select>
+	
+	<update id="delFlagBoard" parameterType="java.util.Map">
+		UPDATE ANSWERBOARD SET DELFLAG ='Y'
+			WHERE DELFLAG = 'N'
+			AND SEQ IN 
+				<foreach collection="seqs" item="seq" open="(" separator="," close=")">
+					#{seq}
+				</foreach>
+	</update>
+	
+	<insert id="writeBoard" parameterType="BoardVo">		
+		<selectKey keyProperty="seq" resultType="java.lang.Integer" order="BEFORE">
+			SELECT ANSWERBOARD_SEQ.NEXTVAL AS SEQ FROM DUAL
+		</selectKey>
+		INSERT INTO ANSWERBOARD(SEQ, ID, TITLE, 
+						CONTENT, STEP, "DEPTH", 
+						"REF", DELFLAG, REGDATE)
+			VALUES(#{seq}, #{id}, #{title}, 
+					#{content}, 0, 0, 
+					(SELECT NVL(MAX(REF),0)+1 FROM ANSWERBOARD a ), 'N', SYSDATE)
+	</insert>
+	
+	<select id="getOneBoard" resultType="BoardVo">
+		SELECT SEQ, ID, TITLE, CONTENT, STEP, "DEPTH", "REF", DELFLAG, REGDATE
+			FROM ANSWERBOARD a 
+			WHERE SEQ=#{seq}
+	</select>
+	
+	
+	
+	
+	<update id="replyUpdate" parameterType="BoardVo">
+		UPDATE ANSWERBOARD SET STEP = STEP+1
+			WHERE REF = (SELECT REF FROM ANSWERBOARD a WHERE SEQ=#{seq})
+				AND STEP > (SELECT STEP FROM ANSWERBOARD a2 WHERE SEQ=#{seq})
+	</update>
+	<insert id="replyInsert" parameterType="BoardVo">
+		INSERT INTO ANSWERBOARD(SEQ, ID, TITLE, 
+								CONTENT, STEP, 
+								"DEPTH", 
+								"REF", 
+								DELFLAG, REGDATE)
+					VALUES(ANSWERBOARD_SEQ.NEXTVAL, #{id}, #{title}, 
+							#{content}, (SELECT STEP FROM ANSWERBOARD a2 WHERE SEQ=#{seq})+1, 
+							(SELECT "DEPTH" FROM ANSWERBOARD a3 WHERE SEQ=#{seq})+1, 
+							(SELECT REF FROM ANSWERBOARD a WHERE SEQ=#{seq}), 
+							'N', SYSDATE)
+	</insert>
+	
+	<select id="restoreBoard" resultType="BoardVo">
+		SELECT SEQ, ID, TITLE, CONTENT, STEP , "DEPTH" , "REF" , DELFLAG , REGDATE 
+			FROM ANSWERBOARD a 
+				WHERE DELFLAG = 'Y'
+	</select>
+	
+	<update id="restoreDelflag">
+		UPDATE ANSWERBOARD SET DELFLAG ='N'
+			WHERE DELFLAG = 'Y'
+				AND SEQ IN #{seq}
+	</update>
+</mapper>

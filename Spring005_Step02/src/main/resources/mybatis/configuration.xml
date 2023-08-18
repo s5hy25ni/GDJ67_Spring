@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
+<configuration>
+<!-- 
+	TODO 17_05 myBatis 환경설정 
+	myBatis의 환경설정을 제외한 모든 설정을 Spring bean으로 생성하여 위임
+	: 위임되는 설정 - datasource, transaction
+	: 고유 설정 - Alias, Settings, mapper 파일	
+-->
+
+<!-- bean -->
+<!-- <properties></properties> -->
+
+<!-- 지금 필요 없음 -->
+<!-- <settings></settings> -->
+<typeAliases>
+	<typeAlias type="com.min.edu.dto.TestDto" alias="tDto"/>
+</typeAliases>
+
+<!-- bean -->
+<!-- <environments default="">
+	<environment id="">
+		<transactionManager type=""/>
+		<dataSource type="">
+			<property name="" value=""/>
+			<property name="" value=""/>
+			<property name="" value=""/>
+			<property name="" value=""/>
+		</dataSource>
+	</environment>
+</environments> -->
+
+<mappers>
+	<mapper resource="sqls/Test_Statement.xml"/>
+</mappers>
+</configuration>

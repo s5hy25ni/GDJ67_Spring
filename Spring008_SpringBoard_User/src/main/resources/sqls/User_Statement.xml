@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.min.edu.model.mapper.UserDaoImpl">
+
+	<select id="getLogin" resultType="UserVo" parameterType="java.util.Map">
+		SELECT ID, NAME, EMAIL, AUTH, DELFLAG , JOINDATE 
+			FROM USERINFO u 
+			WHERE ID=#{id}
+				AND PASSWORD=#{pw}
+	</select>
+	
+	<select id="isDuplicateCheck" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+			FROM USERINFO u 
+			WHERE ID=#{id}
+	</select>
+	
+	<insert id="signupMember" parameterType="UserVo">
+		INSERT INTO USERINFO(ID, NAME, PASSWORD, EMAIL, 
+							AUTH, DELFLAG, JOINDATE )
+					VALUES(#{id},#{name},#{password},#{email},
+							'U','N', SYSDATE)
+	</insert>
+	
+	<select id="userSelectAll" resultType="UserVo">
+		SELECT ID, NAME
+			FROM USERINFO u
+			WHERE AUTH='U'
+	</select>
+	
+	<select id="userSelectOne" resultType="UserVo">
+		SELECT ID, NAME, EMAIL, AUTH, DELFLAG , TO_CHAR(JOINDATE, 'YYYY-MM-DD') AS JOINDATE
+			FROM USERINFO u 
+			WHERE ID=#{id}
+	</select>
+	
+	<select id="getSerarchUser" parameterType="UserVo" resultType="UserVo">
+		SELECT ID, NAME
+			FROM USERINFO u 
+			WHERE AUTH='U'
+			<choose>
+				<when test="opt.equals('id')">
+					AND ID LIKE '%'||#{keyword}||'%'
+				</when>
+				<when test="opt.equals('name')">
+					AND NAME LIKE '%'||#{keyword}||'%'
+				</when>				
+			</choose>
+	</select>
+	
+	<select id="findId" parameterType="java.util.Map" resultType="java.lang.String">
+		SELECT ID
+			FROM USERINFO u 
+			WHERE NAME=#{name}
+				AND EMAIL=#{email}
+				AND AUTH='U'
+	</select>
+	
+	<select id="pwChk" parameterType="java.util.Map" resultType="java.lang.String">
+		SELECT PASSWORD
+			FROM USERINFO
+			WHERE ID=#{id}
+	</select>
+	
+	<update id="changeAuthToA" parameterType="java.util.Map">
+		UPDATE USERINFO SET AUTH='A'
+			WHERE ID=#{id}
+	</update>
+	
+	<update id="changeAuthToU" parameterType="java.util.Map">
+		UPDATE USERINFO SET AUTH='U'
+			WHERE ID=#{id}
+	</update>
+	
+	<update id="changeDelflagToN" parameterType="java.util.Map">
+		UPDATE USERINFO SET DELFLAG='N'
+			WHERE ID=#{id}
+	</update>
+	
+	<update id="changeDelflagToY" parameterType="java.util.Map">
+		UPDATE USERINFO SET DELFLAG='Y'
+			WHERE ID=#{id}
+	</update>
+	
+	<select id="getAllUser" resultType="UserVo">
+		SELECT ID, NAME, EMAIL, AUTH, DELFLAG, JOINDATE
+			FROM USERINFO u
+	</select>
+</mapper>

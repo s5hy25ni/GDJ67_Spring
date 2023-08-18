@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+
+<!-- 
+	TODO 00_03 작성한 Adivce를 Bean으로 등록하여 AOP Config에 연결하여 사용 
+				annotation 방법으로 작성시 클래스 위에 @Component @Aspect	
+-->
+<bean id="daoLogAop" class="com.min.edu.aop.DaoLogAop"/>
+
+
+<!-- 
+	TODO 00_04 aop 설정 pointCut, JoinPoint 
+	class의 해당 메소드 위에 작동되는 Advice를 작성 (@Before, @After, @AfterReturning, @AfterThrowing, @Around)
+	pointCut="execution(public * * * (..)"	
+-->
+<aop:config>
+	<aop:pointcut expression="execution(public * com.min.edu.model.*Dao*.*(..))" id="daoLogAopPointCut"/> <!-- id: 적용되는 곳, pointCut: 어떤 상황일 때 -->
+	<aop:aspect ref="daoLogAop">
+		<aop:before method="before" pointcut-ref="daoLogAopPointCut"/>
+		<aop:after-returning method="afterReturning" pointcut-ref="daoLogAopPointCut"/>
+		<aop:after-throwing method="error" pointcut-ref="daoLogAopPointCut" throwing="e"/>
+	</aop:aspect>
+</aop:config>
+</beans>

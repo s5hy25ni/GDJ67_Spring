@@ -62,6 +62,19 @@ public class LoginController {
 			logger.info("HttpSession은 session scope이기 때문에 값이 유지됨 {}", sessionVo.getName());
 		}
 		
+		try {
+//			session.invalidate();
+			UserVO sessionVoTmp = (UserVO)session.getAttribute("loginVo");
+		} catch (Exception e) {
+			logger.info("invalidate는 객체 자체를 삭제하기 때문에 getAttribute() : 세션이 이미 무효화되었습니다.");
+		}
+		
+		// 세션의 삭제는 invalidate()와 removeAttribute("key")가 있다.
+		logger.info("session의 삭제는 session.removeAttribute()");
+		session.removeAttribute("loginVo");
+		UserVO sessionVoTmp2 = (UserVO)session.getAttribute("loginVo");
+		logger.info("HttpSession의 내부에서 객체만 삭제된다. 삭제된 session {}", sessionVoTmp2);
+		
 		return "home";
 	}
 }

@@ -9,6 +9,8 @@
 	<configs>
 		<config>src/main/webapp/WEB-INF/spring/appServlet/root-context.xml</config>
 		<config>src/main/webapp/WEB-INF/spring/appServlet/international_context.xml</config>
+		<config>src/main/webapp/WEB-INF/spring/appServlet/mail_context.xml</config>
+		<config>src/main/webapp/WEB-INF/spring/appServlet/file_context.xml</config>
 	</configs>
 	<autoconfigs>
 		<config>src/main/webapp/WEB-INF/spring/appServlet/servlet-context.xml</config>

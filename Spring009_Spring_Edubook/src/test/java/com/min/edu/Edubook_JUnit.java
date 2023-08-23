@@ -31,10 +31,10 @@ public class Edubook_JUnit {
 	@Test
 	public void login() {
 		UserVO vo = new UserVO();
-		vo.setId("admin");
+		vo.setId("hello");
 		vo.setPassword("1234");
-		UserVO vo2 =service.login(vo);
-		assertNotNull(vo2);
+		UserVO One = service.login(vo);
+		assertNotNull(One);
 	}
 
 }

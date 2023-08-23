@@ -4,11 +4,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>EduBook Index</title>
+<title>EduBook index 페이지</title>
 </head>
 <body>
-	<div style="text-align: center;">
-		<a href="./main.do">Spring EduBook 시작하기</a>
-	</div>
+<div style="text-align: center;">
+	<a href="./main.do">Spring EduBook 시작하기</a>
+</div>
 </body>
 </html>

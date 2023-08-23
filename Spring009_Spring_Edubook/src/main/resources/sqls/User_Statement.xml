@@ -2,12 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.min.edu.model.mapper.UserDaoImpl">
 
-
 <!-- 
 	resultMap
-	1) 테이블을 JOIN하여 값을 생성할 때 사용(1:1, 1:N), Collection, associate
-	2) column의 매핑은 VO의 setter 메소드이다 따라서 컬럼의 결과가 setter의 메소드명과 다른 경우
- -->
+	1) 테이블을 JOIN하여 값을 생성(1:1, 1:n ..) Collection, Associate
+	2) Column의 매핑은 VO의 setter 메소드이다. 따라서 컬럼의 결과가 setter의 메소드명과 다른경우
+-->
 <resultMap type="UserVO" id="UserMap">
 	<result column="ID" property="id"/>
 	<result column="NAME" property="name"/>
@@ -16,24 +15,24 @@
 </resultMap>
 
 <!-- 
-	selectList(), selectOne()은 MyBatis 반환에 따라서 객체를 선택해야 함
+	selectList(), selectOne()은 MyBatis 반환에 따라서 객체를 선택해야함
 	쿼리의 결과가 없는 경우(공집합)
 	
-	따라서 갯수를 판단해서 처리할 수 있는 것 selectList() -> 결과를 size 메서드를 통해 개수 판단
-	selectOne() 공집한인 경우 null을 반환하기 때문에 아이디 검사, 단일의 값을 처리할 때 사용
-	반드시 null 판단을 통해서 작업해야 함
+	따라서 개수를 판단해서 처리할 수 있는 것 selectList() -> 결과를 size()개수를 판단함
+	selectOne은 공집합인 경우 null을 반환하기 때문에 아이디 검사 단일의 값을 처리할 때 사용하거나 반드시 null판단을 통해서 작업해야 한다
 	
-	MVC 구조에서 값전달 방법
-	view(name을 통해서 전달) -> primitive, DTO/VO, Map -> 값을 받음, setter 호출, {"name", "value"}
-	작업의 효율을 위해서(변수의 변환) View와 DTO/VO와 mapper의 전달방식의 이름을 맞춰 Binding 하면 좋다
+	MVC 구조에서 값 전달 방법
+	V(name을 통해서 전달) -> primitive, DTO/VO, Map -> 값을 받음, setter호출, {"name","value"}
+	작업의 효율을 위해서(변수의 변환) View와 DTO/VO와 Mapper의 전달방식의 이름을 맞춰 Binding하면 좋다
 	
-	mybatis 3.x에서는 parameter 작성하지 않아도 됨
-	parameterType, resultType 상세위치를 적을 필요도 없음
- -->
+	Mybatis 3.x~에서는 Parameter 작성하지 않아도 됨
+	parameterType, resultType 상세 위치를 적을 필요도 없음
+-->
 
 <select id="login" resultMap="UserMap">
 	SELECT ID, NAME, EMAIL, AUTH
 		FROM USERINFO
 		WHERE ID=#{id} AND PASSWORD=#{password}
 </select>
+
 </mapper>

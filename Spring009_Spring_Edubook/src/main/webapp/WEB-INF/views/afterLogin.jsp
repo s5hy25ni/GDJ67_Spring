@@ -5,14 +5,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>로그인 후 화면</title>
 <style type="text/css">
 	#page{
-		width:900px;
+		width: 900px;
 		margin: 0 auto;
 	}
 	#header{
-		background: pink;
+		background:burlywood;
 		text-align: center;
 	}
 	#header>h1, #header>div{
@@ -21,37 +21,40 @@
 	}
 	#nav li{
 		display: inline-block;
-		background-color: lightgrey;
+		background-color: lightcyan;
 		height: 30px;
 		text-align: center;
 		line-height: 30px;
 		margin-right: 10%;
 	}
 	#aside{
-		border: 1px solid pink;
+		border: 1px solid tan;
 		width: 20%;
 		min-height: 500px;
 		float: left;
 		line-height: 100px;
 		padding-left: 10px;
 	}
+	
+	#aside ul, li{
+		list-style: none;
+	}
+	
 	#section{
-		border: 1px soild tan;
+		border: 1px solid tan;
 		min-height: 500px;
 		margin-left: 200px;
 	}
-	ul{
-		list-style: none;
-	}
+	
 	#footer{
 		clear: both;
 		height: 80px;
-		background: pink;
+		background: burlywood;
 	}
+	
 	#footer p{
 		text-align: center;
 		line-height: 80px;
-		
 	}
 </style>
 </head>
@@ -59,9 +62,9 @@
 	<div id="page">
 		<header id="header">
 			<h1>헤더영역</h1>
-			${sessionScope.loginVo.name}님 반갑습니다!
+			${sessionScope.loginVo.name}님 반갑습니다
 			<c:if test="${loginVo.auth eq 'A'}">
-				<div>[관리자모드]</div>
+				<div>[관리자 모드]</div>
 			</c:if>
 			<div>
 				<a href="#">[게시판 보기]</a>
@@ -89,7 +92,7 @@
 		</aside>
 		<section id="section">
 			<div>
-				전달받은 Model 및 HttpSession 값 확인
+				전달받은 Model 및 HttpSession값 확인
 				<ul>
 					<li>model loginVo값 : ${requestScope.loginVo.name}</li>
 					<li>HttpSession loginVo값 : ${sessionScope.loginVo.name}</li>

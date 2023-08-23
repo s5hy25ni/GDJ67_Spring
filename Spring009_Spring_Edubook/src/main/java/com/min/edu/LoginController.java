@@ -10,10 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.min.edu.model.service.IUserService;
 import com.min.edu.vo.UserVO;
+
 
 @Controller
 public class LoginController {
@@ -25,21 +25,18 @@ public class LoginController {
 	
 	@PostMapping("/login.do")
 	public String login(UserVO vo, HttpSession session, Model model, HttpServletRequest request) {
-		logger.info("@Controller LoginController Login 요청받은 값 {}", vo);
+		logger.info("Welcome LoginController login 요청받은 값 {}", vo);
 		UserVO loginVo = service.login(vo);
 		if(loginVo == null) {
 			return "redirect:/main.do";
 		} else {
 			/*
-			 * model은 spring container의 request 객체이다.
-			 * @RequestMapping과 값을 공유
+			 * model은 spring container의 request 객체이다 @RequestMapping과 값을 공유
 			 * 
 			 * 1) org.springframework.ui.Model model -> model.addAttribute("loginVo", loginVo); => request scope 처리
-			 * 2) javax.servlet.HttpSession session -> session.setAttribute("lgoinVo", loginVo); => session scope 처리
+			 * 2) javax.servlet.HttpSession session -> session.setAttribute("loginVo", loginVo); => session scope 처리
 			 * 3) @SessionAttribute(loginVo) -> model.addAttribute("loginVo", loginVo); => session + Spring Container session scope 처리
-			 * 
 			 */
-			
 			session.setAttribute("loginVo", loginVo);
 			model.addAttribute("loginVo", loginVo);
 			
@@ -49,8 +46,8 @@ public class LoginController {
 	
 	@GetMapping("/logout.do")
 	public String logout(HttpSession session, Model model) {
-		logger.info("@Controller LoginController logout");
-		logger.info("session 삭제는 session.invalidate()"); // session 사용이 무효화되어 메소드를 사용할 수 없다.
+		logger.info("Welcome LoginController logout");
+		logger.info("session삭제는 session.invalidate()"); //session의 사용이 무효화 되어 메소드를 사용할 수 없다
 		
 		UserVO modelVo = (UserVO)model.getAttribute("loginVo");
 		if(modelVo == null) {
@@ -63,13 +60,13 @@ public class LoginController {
 		}
 		
 		try {
-//			session.invalidate();
+	//		session.invalidate();
 			UserVO sessionVoTmp = (UserVO)session.getAttribute("loginVo");
-		} catch (Exception e) {
-			logger.info("invalidate는 객체 자체를 삭제하기 때문에 getAttribute() : 세션이 이미 무효화되었습니다.");
+		} catch(Exception e) {
+			logger.info("invalidate는 객체 자체를 삭제하기 때문에 getAttribute() : 세션이 이미 무효화되었습니다");
 		}
 		
-		// 세션의 삭제는 invalidate()와 removeAttribute("key")가 있다.
+		//세션의 삭제는 invalidate()와 removeAttribute("키")가 있다
 		logger.info("session의 삭제는 session.removeAttribute()");
 		session.removeAttribute("loginVo");
 		UserVO sessionVoTmp2 = (UserVO)session.getAttribute("loginVo");
@@ -77,4 +74,6 @@ public class LoginController {
 		
 		return "home";
 	}
+	
+	
 }

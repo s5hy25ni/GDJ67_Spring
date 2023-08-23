@@ -10,13 +10,13 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
 @Getter
 @Setter
-public class UserVO implements Serializable {
-
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserVO implements Serializable{
+	
 	private static final long serialVersionUID = -4968073999920724528L;
 	
 	private String id;
@@ -26,4 +26,5 @@ public class UserVO implements Serializable {
 	private String auth;
 	private String delflag;
 	private String joindate;
+	
 }

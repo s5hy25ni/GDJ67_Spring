@@ -26,21 +26,23 @@
 				</li>
 				
 				<li>
-					<a href="./test02.do">test02.do : HttpAttribute 삭제</a>
-					<button onclick="location.href='./result02S.do'">결과 확인 Result01</button>
+					<a href="./test02.do">test02.do : HttpSession 삭제</a>
+					<button onclick="location.href='./result02.do'">결과 확인 Result02</button>
 				</li>
 			</ul>
 		</fieldset>
+		
 		<fieldset>
-			<legend>다른 Controller에서의 확인</legend>
+			<legend>다른 Controller 확인</legend>
 			<ul>
 				<li>
 					<a href="./test03.do">test03.do : @SessionAttribute 삭제</a>
-					<button onclick="location.href='./result03.do'">결과 확인 Result01</button>
+					<button onclick="location.href='./result03.do'">결과 확인 Result03</button>
 				</li>
+				
 				<li>
 					<a href="./test04.do">test04.do : HttpSession 삭제</a>
-					<button onclick="location.href='./result04.do'">결과 확인 Result01</button>
+					<button onclick="location.href='./result04.do'">결과 확인 Result04</button>
 				</li>
 			</ul>
 		</fieldset>

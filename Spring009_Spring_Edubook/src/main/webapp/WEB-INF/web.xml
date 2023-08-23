@@ -3,20 +3,19 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
-         
-    <display-name>Spring009_Spring_Edubook</display-name>
-    
-    <welcome-file-list>
-    	<welcome-file>index.jsp</welcome-file>
-    </welcome-file-list>
 
+	<display-name>Spring009_Spring_Edubook</display-name>
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+	
 	<!-- The definition of the Root Spring Container shared by all Servlets and Filters -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
 			/WEB-INF/spring/appServlet/root-context.xml
-			/WEB-INF/spring/appServlet/mail_context.xml
-			/WEB-INF/spring/appServlet/file_context.xml
+			/WEB-INF/spring/appServlet/mail-context.xml
+			/WEB-INF/spring/appServlet/file-context.xml
 		</param-value>
 	</context-param>
 	
@@ -32,8 +31,8 @@
 		<init-param>
 			<param-name>contextConfigLocation</param-name>
 			<param-value>
-				/WEB-INF/spring/appServlet/servlet-context.xml
-				/WEB-INF/spring/appServlet/international_context.xml
+			/WEB-INF/spring/appServlet/servlet-context.xml
+			/WEB-INF/spring/appServlet/international-context.xml
 			</param-value>
 		</init-param>
 		<load-on-startup>1</load-on-startup>
@@ -52,9 +51,9 @@
 			<param-value>UTF-8</param-value>
 		</init-param>
 		<init-param>
-			<param-name>forceEncoding</param-name>
-			<param-value>true</param-value>
-		</init-param>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
 	</filter>
 	<filter-mapping>
 		<filter-name>encodingFilter</filter-name>
@@ -69,4 +68,5 @@
 		<filter-name>accessLogFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+	
 </web-app>

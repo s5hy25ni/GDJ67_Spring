@@ -16,4 +16,5 @@ public class UserServiceImpl implements IUserService {
 	public UserVO login(UserVO vo) {
 		return dao.login(vo);
 	}
+
 }

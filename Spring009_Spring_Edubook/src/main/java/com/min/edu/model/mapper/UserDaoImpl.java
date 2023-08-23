@@ -10,14 +10,15 @@ import com.min.edu.vo.UserVO;
 
 @Repository
 public class UserDaoImpl implements IUserDao {
-
-	private Logger logger = LoggerFactory.getLogger(this.getClass());
+	
+private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Autowired
 	private SqlSessionTemplate sqlSession;
-	
+
 	@Override
 	public UserVO login(UserVO vo) {
-		return sqlSession.selectOne("com.min.edu.model.mapper.UserDaoImpl.login", vo);
+		return sqlSession.selectOne("com.min.edu.model.mapper.UserDaoImpl.login",vo);
 	}
+
 }

@@ -76,7 +76,7 @@ public class MySocketHandlerGroup extends TextWebSocketHandler{
 						txt = newMsg;
 					} else {
 						String part1 = msg.substring(0, msg.indexOf(":")).trim();
-						String part2 = "["+part1+"]"+msg.substring(0, msg.indexOf(":")+1);
+						String part2 = "["+part1+"]"+msg.substring(msg.trim().indexOf(":")+1);
 						txt= part2;
 					}
 					s.sendMessage(new TextMessage(txt));

@@ -7,12 +7,12 @@
 <title>그룹채팅 화면</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <link rel="stylesheet" href="./css/chatGroupView.css">
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.7.0.slim.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.7.0.js"></script>
 <script type="text/javascript" src="./js/chatGroup.js"></script>
 </head>
 <body>
 	<div class="container">
-		<button class="btn btn-danger btn-block">채팅종료</button>
+		<button class="btn btn-danger btn-block" onclick="roomClose()">채팅종료</button>
 		<table>
 			<tr>
 				<td colspan="2" align="center">

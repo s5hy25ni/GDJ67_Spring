@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.min.edu.model.mapper">
+
+	<insert id="joinUser">
+		INSERT INTO HR.USERINFO(ID, NAME, PASSWORD, EMAIL, AUTH, DELFLAG, JOINDATE)
+			VALUES(#{id}, #{name}, #{password}, #{email}, 'U', 'N', SYSDATE)
+	</insert>
+	
+	<select id="loginUser" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+			FROM USERINFO
+			WHERE ID=#{id} AND PASSWORD=#{password}
+	</select>
+	
+	<update id="updatePassword">
+		UPDATE USERINFO SET PASSWORD=#{password}
+			WHERE ID=#{id}
+	</update>
+	
+	<select id="getUserList" resultType="UserVo">
+		SELECT ID, NAME, EMAIL, AUTH, DELFLAG, JOINDATE
+			FROM(
+				SELECT ID, NAME, EMAIL, AUTH, DELFLAG, JOINDATE,
+					ROW_NUMBER() OVER(ORDER BY JOINDATE) RN
+				FROM USERINFO
+				)
+			WHERE RN BETWEEN #{first} AND #{last}	
+	</select>
+	
+	<select id="getUserCount" resultType="java.lang.Integer">
+		SELECT COUNT(*)
+			FROM USERINFO
+	</select>
+</mapper>

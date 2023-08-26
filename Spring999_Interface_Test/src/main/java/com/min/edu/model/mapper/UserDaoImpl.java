@@ -24,7 +24,12 @@ public class UserDaoImpl implements IUserDao {
 	public int loginUser(Map<String, Object> map) {
 		return session.selectOne("com.min.edu.model.mapper.loginUser",map);
 	}
-
+	
+	@Override
+	public UserVo getUserInfo(String id) {
+		return session.selectOne("com.min.edu.model.mapper.getUserInfo", id);
+	}
+	
 	@Override
 	public int updatePassword(Map<String, Object> map) {
 		return session.update("com.min.edu.model.mapper.updatePassword",map);

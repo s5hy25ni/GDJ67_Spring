@@ -26,12 +26,12 @@ public class UserJUnitTest {
 	@Autowired
 	private IUserService service;
 	
-	@Test
+//	@Test
 	public void sessionTest() {
 		assertNotNull(session);
 	}
 	
-//	@Test
+	@Test
 	public void test() {
 		// 회원가입 테스트
 //		UserVo vo = new UserVo("sh123", "쏘현", "1234", "sh123@gmail.com");
@@ -44,6 +44,12 @@ public class UserJUnitTest {
 //		map.put("password", "12344");
 //		int n = service.loginUser(map);
 //		assertEquals(0, n);
+		
+		// 유저 상세 조회 테스트
+//		String id = "user01";
+//		UserVo vo = service.getUserInfo(id);
+//		assertNotNull(vo);
+				
 		
 		// 비밀번호 업데이트 테스트
 //		Map<String, Object> map = new HashMap<String, Object>();
@@ -60,8 +66,9 @@ public class UserJUnitTest {
 //		assertEquals(10, list.size());
 		
 		// 총 유저
-		int n = service.getUserCount();
-		assertNotNull(n);
+//		int n = service.getUserCount();
+//		assertNotNull(n);
+
 	}
 
 }

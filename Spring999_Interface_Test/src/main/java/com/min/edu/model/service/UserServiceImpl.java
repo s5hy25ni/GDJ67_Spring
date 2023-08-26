@@ -24,6 +24,11 @@ public class UserServiceImpl implements IUserService {
 	public int loginUser(Map<String, Object> map) {
 		return dao.loginUser(map);
 	}
+	
+	@Override
+	public UserVo getUserInfo(String id) {
+		return dao.getUserInfo(id);
+	}
 
 	@Override
 	public int updatePassword(Map<String, Object> map) {

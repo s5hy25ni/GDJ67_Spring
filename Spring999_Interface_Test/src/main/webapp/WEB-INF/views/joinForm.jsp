@@ -7,14 +7,9 @@
 <title>회원가입</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 </head>
-<style type="text/css">
-	.container{
-		width: 500px;
-		margin: 100px auto;
-	}
-</style>
 <body>
 	<div class="container">
+		<h1>회원가입</h1>
 		<form action="./join.do" method="post">
 			<div class="form-group">
 			  <label for="id">ID:</label>

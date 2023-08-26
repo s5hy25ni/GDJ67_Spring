@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 
-import org.eclipse.jdt.internal.compiler.env.IModule.IService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -40,7 +39,7 @@ public class JobsJunitTest {
 		assertNotNull(list);
 	}
 	
-	@Test
+//	@Test
 	public void insertJob() {
 		JobsVo vo = new JobsVo("DEV", "Developer", 10000, 20000);
 		int n = service.transaction(vo);

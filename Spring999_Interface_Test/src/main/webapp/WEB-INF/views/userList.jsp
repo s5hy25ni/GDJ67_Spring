@@ -8,50 +8,48 @@
 <meta charset="UTF-8">
 <title>회원목록</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.7.0.js"></script>
-<style type="text/css">
-	.container{
-		width: 600px;
-		margin: 100px auto;
-	}
-</style>
 </head>
 <body>
-	<div id="container">
+	<div class="container">
+		<h1>유저 목록 <button class="btn btn-primary" onclick="location.href='./userInfo.do'">내 정보 확인</button></h1>
 		<table class="table table-hover">
 			<thead>
 				<tr>
-					<th>NO</th>
-					<th>ID</th>
-					<th>NAME</th>
-					<th>EMAIL</th>
-					<th>AUTH</th>
-					<th>DELFLAG</th>
-					<th>JOINDATE</th>
+					<th>순번</th>
+					<th>아이디</th>
+					<th>이름</th>
+					<th>이메일</th>
+					<th>유형</th>
+					<th>상태</th>
+					<th>가입일</th>
 				</tr>
 			</thead>
 			<tbody>
-				<fmt:parseNumber type ="number" var="start" value="${startNo}"/>
 				<c:forEach items="${list}" var="vo" varStatus="vs">
 					<tr>
-						<td>${start + vs}</td>
+						<td>${(page.curPage-1)*page.cntOnePage+1+vs.index}</td>
 						<td>${vo.id}</td>
 						<td>${vo.name}</td>
 						<td>${vo.email}</td>
-						<td>${vo.auth}</td>
-						<td>${vo.delflag}</td>
-						<td>${vo.joindate}</td>
+						<td>${(vo.auth=='U')?"사용자":"관리자"}</td>
+						<td>${(vo.delflag=='N')?"활동":"휴면"}</td>
+						<fmt:formatDate var="joindate" value="${vo.joindate}" pattern="yyyy-MM-dd"/>
+						<td>${joindate}</td>
 					</tr>			
 				</c:forEach>
 			</tbody>
 		</table>
-		<ul class="pagination">
-		  <li><a href="#">1</a></li>
-		  <li class="active"><a href="#">2</a></li>
-		  <li><a href="#">3</a></li>
-		  <li><a href="#">4</a></li>
-		  <li><a href="#">5</a></li>
-		</ul>
+		<div style="text-align: center">
+			<ul class="pagination">
+				<c:if test="${page.startPage!=1}"><li><a href="./getUserList.do?page=1">◁</a></li></c:if>
+				<c:if test="${page.startPage!=1}"><li><a href="./getUserList.do?page=${page.startPage-5}">◀</a></li></c:if>
+				<c:forEach var="p" begin="${page.startPage}" end="${page.endPage}">
+					<li ${page.curPage==p?"class='active'":""}><a href="./getUserList.do?page=${p}">${p}</a></li>
+				</c:forEach>
+				<c:if test="${page.endPage!=page.totalPage}"><li><a href="./getUserList.do?page=${page.startPage+5}">▶</a></li></c:if>
+				<c:if test="${page.endPage!=page.totalPage}"><li><a href="./getUserList.do?page=${page.totalPage}">▷</a></li></c:if>
+			</ul>
+		</div>
 	</div>
 </body>
 </html>

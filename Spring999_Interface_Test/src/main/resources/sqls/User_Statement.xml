@@ -13,6 +13,12 @@
 			WHERE ID=#{id} AND PASSWORD=#{password}
 	</select>
 	
+	<select id="getUserInfo" resultType="UserVo">
+		SELECT ID, NAME, EMAIL, AUTH, DELFLAG, JOINDATE
+			FROM USERINFO
+			WHERE ID=#{id}
+	</select>
+	
 	<update id="updatePassword">
 		UPDATE USERINFO SET PASSWORD=#{password}
 			WHERE ID=#{id}

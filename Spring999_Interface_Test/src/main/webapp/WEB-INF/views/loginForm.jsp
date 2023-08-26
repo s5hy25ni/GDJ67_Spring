@@ -7,14 +7,9 @@
 <title>로그인</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 </head>
-<style type="text/css">
-	.container{
-		width: 300px;
-		margin: 100px auto;
-	}
-</style>
 <body>
 	<div class="container">
+		<h1>로그인</h1>
 		<form action="./login.do" method="post">
 			<div class="input-group">
 				<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>

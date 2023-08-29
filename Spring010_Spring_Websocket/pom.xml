@@ -15,7 +15,7 @@
 	</properties>
   
   <dependencies>
-    <!-- Spring 관련 Core, MVC 개발에 필요한 라이브러리 -->
+    	<!-- Spring 관련 Core, MVC 개발에 필요한 라이브러리 -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>

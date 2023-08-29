@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+<!-- TODO 05_02 db.propertis 파일을 bean으로 만듦  -->
+<context:property-placeholder location="classpath:properties/db.properties"/>
+
+<!-- TODO 06_02 Datasource를 위한 JDBC Connection Pool Bean : HikariCP -->
+<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+	<property name="driverClassName" value="${driver}"/>
+	<property name="jdbcUrl" value="${url}"/>
+	<property name="username" value="${user}"/>
+	<property name="password" value="${pw}"/>
+</bean>
+<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource">
+	<constructor-arg ref="hikariConfig"/>
+</bean>
+
+<!-- TODO 07_01 myBatis 객체인 SqlSessionFactory를 bean으로 생성 -->
+<bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
+	<property name="dataSource" ref="dataSource"/>
+	<property name="configLocation" value="classpath:config/Configuration.xml"/>
+</bean>
+
+<!-- TODO 08_01 Spring에서 @Autowire를 통해 DI할 SqlSessionTemplate bean 생성 -->
+<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+	<constructor-arg ref="sqlSessionFactoryBean"/>
+</bean>
+</beans>

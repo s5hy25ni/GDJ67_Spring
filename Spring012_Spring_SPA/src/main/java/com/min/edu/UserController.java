@@ -1,7 +1,9 @@
 package com.min.edu;
 
+import java.io.IOException;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,5 +56,24 @@ public class UserController {
 			return new ResponseEntity<String>("등록 오류입니다.", HttpStatus.BAD_REQUEST);
 		}
 		
+	}
+	
+	//TODO 13_02 로그인 정보를 session에 저장한 후 null -> loginForm.do // !null -> redirect
+	@GetMapping("/login.do")
+	public String loginSession(HttpSession session, HttpServletResponse response) throws IOException {
+		if(session.getAttribute("loginVo")==null) {
+			//TODO 13_03 User Library인 SpringUtils.servletAlert에서 패키징된 파일 사용
+			SpringUtils.servletAlert(response, "잘못된 접근입니다.", "loginForm.do");
+			return "";
+		} else {
+			//TODO 14_01 로그인 후 이동하는 boardList 화면 이동
+			return "redirect:/boardList.do";
+		}
+	}
+	
+	@GetMapping(value="/logout.do")
+	public String logout(HttpSession session) {
+		session.invalidate();
+		return "redirect:/home.do";
 	}
 }

@@ -29,7 +29,7 @@ SELECT *
 		SELECT SEQ, ID, 
 				CASE 
 					WHEN STEP>0 
-					THEN LPAD(' ', 1+(STEP*6)*3, '&nbsp;') || CONCAT(SUBSTR(TITLE,0.10), '...')
+					THEN LPAD(' ', 1+(STEP*6)*3, '&ensp;') || '<img>' || CONCAT(SUBSTR(TITLE,0.10), '...')
 					ELSE TITLE 
 					END AS TITLE,
 				CONTENT, STEP, DEPTH, "REF", DELFLAG , REGDATE ,

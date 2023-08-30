@@ -2,6 +2,32 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <!-- TODO 09_02 myBatis Mapper Statement 생성 -->
 <mapper namespace="com.min.edu.mapper.BoardDaoImpl">
-
+	<!-- TODO 18_01 게시판 전체 조회 페이징 쿼리문 -->
+	<select id="getAllBoardPage" resultType="com.min.edu.vo.BoardVo">
+		SELECT SEQ, ID, TITLE, CONTENT, STEP, DEPTH, "REF", DELFLAG , REGDATE
+			FROM (
+				<![CDATA[
+					SELECT SEQ, ID, 
+							CASE 
+								WHEN STEP>0 
+								THEN LPAD(' ', 1+(STEP*6)*3, '&ensp;') || '<img>' || CONCAT(SUBSTR(TITLE,0.10), '...')
+								ELSE TITLE 
+								END AS TITLE,
+							CONTENT, STEP, DEPTH, "REF", DELFLAG , REGDATE ,
+							ROW_NUMBER() OVER(ORDER BY REF DESC, STEP ASC) rn
+						FROM ANSWERBOARD a
+				]]>
+				)
+			WHERE rn BETWEEN #{first} AND #{last}
+			<if test="auth=='U'.toString()">
+				AND DELFLAG='N'			
+			</if>
+	</select>
 	
+	<select id="getAllBoardCount" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM ANSWERBOARD
+			<if test="auth=='U'.toString()">
+				WHERE DELFLAG='N'			
+			</if>
+	</select>
 </mapper>

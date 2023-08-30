@@ -58,7 +58,7 @@ function loginCheck(){
 				// 성공한다면 반환된 response가 Promise의 객체를 JSON으로 변경하여 다음 then으로 전달
 			response => {
 				if(!response.ok){
-					throw new Error("검색된 회원의 정보가 없습니다. \n 회원가입해주세요 : ")
+					throw new Error("검색된 회원의 정보가 없습니다. \n 회원가입해주세요")
 				} else {
 					return response.json();
 				}
@@ -66,6 +66,8 @@ function loginCheck(){
 		).then( // 성공했을 경우 혹은 반환되는 data를 받아서 처리 하는 곳
 			data => {
 				console.log("반환된 데이타 : ", data.key);
+				//TODO 13_01 로그인 검증이 완료되면 session을 담는 요청 POST
+				location.href='./login.do';
 			}
 			
 		).catch((e)=>{ // 예외(throw)가 발생하면 처리 되는 곳

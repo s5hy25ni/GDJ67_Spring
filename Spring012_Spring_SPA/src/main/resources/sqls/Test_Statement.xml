@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.min.edu.mapper.TestDaoImpl">
+	<select id="getAllBoard" resultType="com.min.edu.vo.Board_Vo">
+		SELECT SEQ , ID , TITLE , REGDATE , DELFLAG , LIKE_USER , HIT_USER 
+			FROM ANSWERBOARD a
+			WHERE ID='uuser1'
+	</select>
+	
+	<select id="getLikeUser" resultType="java.util.Map">
+		SELECT LIKE_USER 
+			FROM ANSWERBOARD a 
+			WHERE SEQ=#{seq}
+	</select>
+	
+	<select id="getHitUser" resultType="java.util.Map">
+		SELECT HIT_USER 
+			FROM ANSWERBOARD a 
+			WHERE SEQ=#{seq}
+	</select>
+	
+	<update id="updateLikeUser">
+		UPDATE ANSWERBOARD 
+			SET LIKE_USER = #{likeUser}
+			WHERE SEQ=#{seq}
+	</update>
+	
+	<update id="updateHitUser">
+		UPDATE ANSWERBOARD 
+				SET HIT_USER = #{hitUser}
+				WHERE SEQ=#{seq}
+	</update>
+</mapper>

@@ -4,10 +4,12 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
-		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 
 <!-- TODO 01_02 Spring DispatcherServlet 파일 설정 component-scan, resolver 설정 -->
 <context:component-scan base-package="com.min.edu"/>
@@ -18,47 +20,46 @@
 	<property name="suffix" value=".jsp"/>
 </bean>
 
-<!-- TODO 15_02 AOP Annotation 기반의 적용을 위한 Auto-Proxy 설정 -->
+<!-- TODO 15_02 AOP annotaion 기반의 적용을 위한 Auto-Proxy 설정 -->
 <aop:aspectj-autoproxy/>
 
+<!-- 
+	TODO 16_01 Spring MVC 브라우저 캐시설정 
+	설정 전> home.do -> login.do -> boardList.do -> logout.do : home.do에서 뒤로가기 버튼 클릭시 세션이 Cache에 저장되어 있어 정보가 노출된다
+	설정 후> <mvc:mapping path=""/>에서 /boardList.do를 등록해서 home.do에서 뒤로가기를 했을 경우 session 정보가 삭제되는 것을 확인
+-->
+<!-- <mvc:interceptors> -->
+<!-- 	<mvc:interceptor> -->
+<!-- 		<mvc:mapping path="/boardList.do"/> -->
+<!-- 		<bean class="org.springframework.web.servlet.mvc.WebContentInterceptor"> -->
+<!-- 			<property name="cacheSeconds" value="0"/> -->
+<!-- 			<property name="useExpiresHeader" value="true"/> -->
+<!-- 			<property name="useCacheControlHeader" value="true"/> -->
+<!-- 			<property name="useCacheControlNoStore" value="true"/> -->
+<!-- 			<property name="cacheMappings"> -->
+<!-- 				<props> -->
+<!-- 					<prop key="/images/**">86400</prop> -->
+<!-- 				</props> -->
+<!-- 			</property> -->
+<!-- 		</bean> -->
+<!-- 	</mvc:interceptor> -->
+<!-- </mvc:interceptors> -->
 
 <!-- 
-	TODO 16_01 Spring MVC 브라우저 캐시 설정
-	설정 전 > home.do -> login.do boardList.do -> logout.do : home.do에서 뒤로 가기 버튼 클릭시 세션이 cache에 저장되어 있음 -> 정보 노출
-	설정 후 > mapping path에 /boardList.do를 등록해서 home.do에서 뒤로가기를 했을 경우 session 정보가 삭제된 것을 확인
- -->
-<!--  <mvc:interceptors>
- 	<mvc:interceptor>
- 		<mvc:mapping path="/boardList.do"/>
- 		<bean class="org.springframework.web.servlet.mvc.WebContentInterceptor">
- 			<property name="cacheSeconds" value="0"/>
- 			<property name="useExpiresHeader" value="true"/>
- 			<property name="useCacheControlHeader" value="true"/>
- 			<property name="useCacheControlNoStore" value="true"/>
- 			<property name="cacheMappings">
- 				<props>
- 					<prop key="/images/**">86400</prop>
- 				</props>
- 			</property>
- 		</bean>
- 	</mvc:interceptor>
- </mvc:interceptors> -->
- 
- <!-- 
- 	TODO 17_01 캐쉬삭제 및 로그인시 interceptor를 통해서 로그인을 확인하고 되어 있지 않다면 해당 페이지 주소를 통해서 접근이 불가능
- 	설정 전 > 로그인이 되어 있지 않은 경우 주소에 boardList.do를 입력 했을 경우 페이지로 접근이 가능 
-  -->
- <mvc:interceptors>
- 	<mvc:interceptor>
- 		<!-- interceptor를 통해서 로그인 Session을 확인하게 되는 URL -->
- 		<mvc:mapping path="/boardList.do"/>
- 		<!-- 제외되는 URL -->
- 		<mvc:exclude-mapping path="/loginForm.do"/>
- 		<mvc:exclude-mapping path="/login.do"/>
- 		<!-- interceptor를 통해서 Session 확인하는 Bean Class -->
- 		<bean class="com.min.edu.interceptor.LoginCheckInterceptor"/>
- 	</mvc:interceptor>
- 	<bean class="org.springframework.web.servlet.mvc.WebContentInterceptor">
+	TODO 17_01 캐쉬삭제 및 로그인 시 Interceptor를 통해 로그인 확인하여 되어 있지 않다면 해당 페이지 주소를 통해서 접근 불가능으로 만듦
+	설정 전> 로그인이 되어 있지 않은 경우 주소에 boardList.do를 입력했을 경우 페이지로 접근이 가능
+-->
+<mvc:interceptors>
+	<mvc:interceptor>
+		<!-- interceptor를 통해서 로그인 Session을 확인하게 되는 URL -->
+		<mvc:mapping path="/boardList.do"/>
+		<!-- 제외되는 URL -->
+		<mvc:exclude-mapping path="/loginForm.do"/>
+		<mvc:exclude-mapping path="/login.do"/>
+		<!-- interceptor를 통해서 Session을 확인하는 Bean 클래스 -->
+		<bean class="com.min.edu.interceptor.LoginCheckInterceptor"/>
+	</mvc:interceptor>
+	<bean class="org.springframework.web.servlet.mvc.WebContentInterceptor">
 		<property name="cacheSeconds" value="0"/>
 		<property name="useExpiresHeader" value="true"/>
 		<property name="useCacheControlHeader" value="true"/>
@@ -69,6 +70,9 @@
 			</props>
 		</property>
 	</bean>
- </mvc:interceptors>
- 
+</mvc:interceptors>
+
+<!-- TODO 23_02 Transaction MVC인 servlet에서 동작되어야 하기 때문에 tx 선언해줌 -->
+<tx:annotation-driven transaction-manager="transactionManager"/>
+
 </beans>

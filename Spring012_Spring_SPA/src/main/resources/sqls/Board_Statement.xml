@@ -1,33 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<!-- TODO 09_02 myBatis Mapper Statement 생성 -->
+<!-- TODO 09_02 MyBatis Mapper Statement 생성 -->
 <mapper namespace="com.min.edu.mapper.BoardDaoImpl">
-	<!-- TODO 18_01 게시판 전체 조회 페이징 쿼리문 -->
-	<select id="getAllBoardPage" resultType="com.min.edu.vo.BoardVo">
-		SELECT SEQ, ID, TITLE, CONTENT, STEP, DEPTH, "REF", DELFLAG , REGDATE
-			FROM (
-				<![CDATA[
-					SELECT SEQ, ID, 
-							CASE 
-								WHEN STEP>0 
-								THEN LPAD(' ', 1+(STEP*6)*3, '&ensp;') || '<img>' || CONCAT(SUBSTR(TITLE,0.10), '...')
-								ELSE TITLE 
-								END AS TITLE,
-							CONTENT, STEP, DEPTH, "REF", DELFLAG , REGDATE ,
-							ROW_NUMBER() OVER(ORDER BY REF DESC, STEP ASC) rn
-						FROM ANSWERBOARD a
-				]]>
-				)
-			WHERE rn BETWEEN #{first} AND #{last}
-			<if test="auth=='U'.toString()">
-				AND DELFLAG='N'			
-			</if>
-	</select>
-	
-	<select id="getAllBoardCount" resultType="java.lang.Integer">
-		SELECT COUNT(*) FROM ANSWERBOARD
-			<if test="auth=='U'.toString()">
-				WHERE DELFLAG='N'			
-			</if>
-	</select>
+
+<!-- TODO 18_01 게시판 전체조회 페이징 쿼리문 -->
+<select id="getAllBoardPage" resultType="com.min.edu.vo.Board_Vo">
+	SELECT SEQ, ID, TITLE, CONTENT, STEP, DEPTH, REF, DELFLAG , REGDATE
+	FROM (
+		<![CDATA[
+		SELECT SEQ, ID,
+				CASE WHEN STEP > 0 
+					THEN LPAD(' ',1+(STEP*6)*5, '&nbsp;') || '<img>' || CONCAT(SUBSTR(TITLE,0,10),'...')
+					ELSE TITLE 
+					END AS TITLE,
+				CONTENT, STEP, DEPTH, REF, DELFLAG , REGDATE,
+				ROW_NUMBER() OVER(ORDER BY REF DESC, STEP ASC) rn	
+			FROM ANSWERBOARD a
+		]]>
+		<if test="auth == 'U'.toString()">
+			WHERE DELFLAG = 'N'
+		</if>
+		)
+	WHERE rn BETWEEN #{first} AND #{last}
+</select>
+
+<select id="getAllBoardCount" resultType="java.lang.Integer">
+	SELECT COUNT(*) FROM ANSWERBOARD
+	<if test="auth == 'U'.toString()">
+		WHERE DELFLAG = 'N'
+	</if>
+</select>
+
+<!-- TODO 20_01 삭제를 위한 쿼리문 -->
+<delete id="selBoardDelFlag">
+	UPDATE ANSWERBOARD SET DELFLAG = 'Y'
+		WHERE SEQ = #{seq}
+</delete>
+
+<!-- TODO 21_01 수정을 위한 상세조회, 수정값 입력 -->
+<select id="getOneBoard" resultType="com.min.edu.vo.Board_Vo">
+	SELECT SEQ, ID, TITLE, CONTENT, TO_CHAR(REGDATE, 'YYYY-MM-DD hh24:mi:ss') REGDATE
+		FROM ANSWERBOARD
+		WHERE SEQ=#{seq}	
+</select>
+<update id="setBoardUpdate">
+	UPDATE ANSWERBOARD SET TITLE=#{title}, CONTENT=#{content}
+		WHERE SEQ=#{seq}
+</update>
+
+<!-- TODO 22_01 답글을 위한 업데이트(setReplyUpdate), 인서트(setReplyInsert) -->
+<update id="setReplyUpdate">
+	UPDATE ANSWERBOARD 
+		SET STEP = STEP +1
+		WHERE 
+			REF = (SELECT REF FROM ANSWERBOARD a WHERE SEQ = #{seq}) AND
+			STEP > (SELECT STEP FROM ANSWERBOARD a2 WHERE SEQ = #{seq})
+</update>
+<insert id="setReplyInsert">
+	INSERT INTO ANSWERBOARD (SEQ, ID, TITLE, CONTENT, "REF", STEP, "DEPTH", REGDATE, DELFLAG)
+				VALUES((SELECT MAX(SEQ)+1 FROM ANSWERBOARD a), #{id}, #{title}, #{content},
+						(SELECT REF FROM ANSWERBOARD a2 WHERE SEQ = #{seq}), 
+						(SELECT STEP+1 FROM ANSWERBOARD a2 WHERE SEQ = #{seq}), 
+						(SELECT DEPTH+1 FROM ANSWERBOARD a2 WHERE SEQ = #{seq}), 
+						SYSDATE , 'N')
+</insert>
 </mapper>

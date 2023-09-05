@@ -16,54 +16,55 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.min.edu.service.IUserService;
-import com.min.edu.vo.UserVo;
+import com.min.edu.vo.Board_Vo;
+import com.min.edu.vo.User_Vo;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @Slf4j
 public class UserController {
-
+	
 	@Autowired
 	private IUserService service;
 	
-	//TODO 12_01 UserController에서 /loginForm.do 요청 화면 이동
+	//TODO 12_02 UserController에서 /loginForm.do 요청화면 이동
 	@GetMapping("/loginForm.do")
 	public String loginForm() {
-		log.info("UserControllre 로그인 화면 이동");
+		log.info("UserController 로그인 화면 이동");
 		return "loginForm";
 	}
 	
 	//TODO 12_06 로그인 화면에서 비동기식 로그인 정보 확인 REST 요청
-	//		Rest요청 후 객체가 있으면 Session에 저장
-	@PostMapping("/loginCheckText.do")
+	//		Rest 요청 후 객체가 있으면 Session에 저장
+	@PostMapping(path ="/loginCheckText.do")
 	@ResponseBody
 	public ResponseEntity<?> loginCheckText(
-			// 두 개의 @RequestBody를 사용할 수 없음		
-//			@RequestBody UserVo vo
+//			두 개의 @RequestBody를 사용할 수 없음
+//			@RequestBody User_Vo vo,
 			@RequestBody Map<String, Object> map,
 			HttpSession session
 			){
-//		log.info("UserController 로그인 정보 조회 비동기식 처리 : {}", vo);
-		log.info("UserController 로그인 정보 조회 비동기식 처리 : {}", map);
+//		log.info("UserController 로그인 정보 조회 비동기식 처리 : {}",vo);
+		log.info("UserController 로그인 정보 조회 비동기식 처리 : {}",map);
 		
-		UserVo uVo = service.login(map);
+		User_Vo uVo = service.login(map);
 		if(uVo != null) {
 			session.setAttribute("loginVo", uVo);
-			return ResponseEntity.ok("{\"key\":\"value\"}");	
+//			return ResponseEntity.ok("{\"key\":\"val\"}");
+			return ResponseEntity.ok().body(uVo);
 		} else {
 //			return new IllegalArgumentException("잘못된 로그인 정보");
-			return new ResponseEntity<String>("등록 오류입니다.", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>("등록 오류입니다", HttpStatus.BAD_REQUEST);
 		}
-		
 	}
 	
-	//TODO 13_02 로그인 정보를 session에 저장한 후 null -> loginForm.do // !null -> redirect
+	//TODO 13_02 로그인 정보를 Session에 저장한 후 null이면 loginForm.do로 보내고, 아니면 redirect:/boardList.do로 보냄
 	@GetMapping("/login.do")
 	public String loginSession(HttpSession session, HttpServletResponse response) throws IOException {
-		if(session.getAttribute("loginVo")==null) {
+		if(session.getAttribute("loginVo") == null) {
 			//TODO 13_03 User Library인 SpringUtils.servletAlert에서 패키징된 파일 사용
-			SpringUtils.servletAlert(response, "잘못된 접근입니다.", "loginForm.do");
+			SpringUtils.servletAlert(response, "잘못된 접근입니다", "loginForm.do");
 			return "";
 		} else {
 			//TODO 14_01 로그인 후 이동하는 boardList 화면 이동
@@ -71,9 +72,13 @@ public class UserController {
 		}
 	}
 	
-	@GetMapping(value="/logout.do")
+	@GetMapping("/logout.do")
 	public String logout(HttpSession session) {
 		session.invalidate();
 		return "redirect:/home.do";
 	}
+	
+	
+	
+
 }

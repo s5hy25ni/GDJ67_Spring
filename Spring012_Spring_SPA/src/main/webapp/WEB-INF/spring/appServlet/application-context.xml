@@ -2,10 +2,14 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 
-<!-- TODO 05_02 db.propertis 파일을 bean으로 만듦  -->
+<!-- TODO 05_02 db.properties 파일을 bean으로 만듦 -->
 <context:property-placeholder location="classpath:properties/db.properties"/>
 
 <!-- TODO 06_02 Datasource를 위한 JDBC Connection Pool Bean : HikariCP -->
@@ -19,14 +23,32 @@
 	<constructor-arg ref="hikariConfig"/>
 </bean>
 
-<!-- TODO 07_01 myBatis 객체인 SqlSessionFactory를 bean으로 생성 -->
+<!-- TODO 07_01 MyBatis 객체인 SqlSessionFactory를 bean으로 생성 -->
 <bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
 	<property name="dataSource" ref="dataSource"/>
 	<property name="configLocation" value="classpath:config/Configuration.xml"/>
 </bean>
 
-<!-- TODO 08_01 Spring에서 @Autowire를 통해 DI할 SqlSessionTemplate bean 생성 -->
+<!-- TODO 08_01 Spring에서 @Autowired를 통해서 DI할 template bean 생성 -->
 <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
 	<constructor-arg ref="sqlSessionFactoryBean"/>
 </bean>
+
+<!--TODO 23_01 Transaction @(annotation) 처리를 위한 설정 -->
+<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	<constructor-arg name="dataSource" ref="dataSource"/>
+</bean>
+
+<!-- 
+	TODO 24_01 Transaction AOP 설정 
+		예외가ㅣ 발생했을 때 Advice로 설정	
+-->
+<tx:advice transaction-manager="transactionManager" id="advice">
+	<tx:attributes>
+		<tx:method name="*" propagation="REQUIRED" rollback-for="Exception"/>
+	</tx:attributes>
+</tx:advice>
+<aop:config>
+	<aop:advisor advice-ref="advice" pointcut="execution(public * com.min.edu.service.*Service*.*(..))"/>
+</aop:config>
 </beans>

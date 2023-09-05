@@ -9,9 +9,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Controller
 public class HomeController {
+
 	@GetMapping("/home.do")
 	public String home() {
 		log.info("처음 시작하는 HomeController");
 		return "home";
 	}
+	
 }

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <title>웹소켓 클라이언트 2</title>
+</head>
+<script>
+    if(window.WebSocket){
+        console.log("websocket을 지원하고 있습니다");
+    } else {
+        console.log("websocket을 지원하지 않고 있습니다");
+    }
+    function init(){
+        if(this.count < 0){
+            return; //java의 continue
+        }
+    //2) 화면의 View Dom 객체를 생성
+    var view = document.getElementById('view');
+    var sendBtn = document.getElementById('sendBtn');
+    var stopBtn = document.getElementById('stopBtn');
+    var status = document.getElementById('status');
+    //3) 웹소켓 echo server 연결
+    var ws = new WebSocket('ws://localhost:3000');
+    console.log(ws)
+    var dom;
+    //4) 웹소켓 생성시 자동으로 호출되는 open
+    ws.onopen = function(event){
+        console.log('Client 접속성공 :', event);
+        dom = "<div style='color:orange;'>Connected</div>";
+        status.innerHTML += dom;
+    }
+    //4) 멈추기버튼을 클릭시 접속을 종료
+    stopBtn.addEventListener("click",function(){
+            ws.close();
+    })
+    //연결 종료시에는 server close 이벤트를 전달한다
+    //Client는 이를 받아서 event 처리한다
+    //readyStatus : 3
+    ws.onclose = function(evt){
+        console.log('Client 닫기');
+        dom = "<div style='color:orange;'>Websocket Closed</div>";
+        status.innerHTML += dom;
+    }
+        //5) 웹소켓에서 error가 발생시 메세지 출력
+        ws.addEventListener('error',function(evt){
+            console.log('websocket error: ', evt);
+            status.innerHTML += "<br><b style='color:red;'>웹소켓 에러발생</b>";
+        })
+        //6) sendBtn 클릭시 문자열 전달
+        sendBtn.addEventListener('click', function(evt){
+            var data = view.value;
+            ws.send(data);
+            data = '';
+            view.focus();
+        })
+        view.addEventListener('keyup', function(e){
+            if(e.keyCode == 13){
+                var value = view.value;
+                ws.send(value);
+                value = '';
+                view.focus();
+            }
+        })
+        ws.addEventListener('message', function(evt){
+            console.log('message', evt);
+            dom = "<div style='color:blue;'>"+evt.data+"</div>";
+            status.innerHTML += dom;
+        })
+    }
+    //1) init 함수 실행
+    window.addEventListener('load', init);
+    //window.onload = init()
+    </script>
+<body>
+    <div class="container">
+        <h3>웹소켓</h3>
+        <br>
+        <input type="text" class="form-control" id="view">
+        <br>
+        <button class="btn btn-primary" id="sendBtn">글보내기</button>
+        <button class="btn btn-primary" id="stopBtn">멈추기</button>
+        <br>
+        <div id="status">status</div>
+    </div>
+</body>
+</html>

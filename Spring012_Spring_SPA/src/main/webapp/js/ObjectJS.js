@@ -1,7 +1,7 @@
-class RequestData{
-	constructor(id="",pwd=""){
-		this.id=id;
-		this.pwd=pwd;
+class RequestData {
+	constructor(id="", pwd=""){
+		this.id = id;
+		this.pwd = pwd;
 	}
 }
 

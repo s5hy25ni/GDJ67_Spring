@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<script>
+    if(window.WebSocket){
+        console.log("websocket을 지원하고 있습니다.")
+    }else{
+        console.log("websocket을 지원하지 않고 있습니다.")
+    }
+
+    function init(){
+        if(this.count < 0){
+            return; // java의 continue
+        }
+    
+
+        // 2) 화면의 View Dom 객체를 생성
+        var view = document.getElementById('view');
+        var sendBtn = document.getElementById('sendBtn');
+        var stopBtn = document.getElementById('stopBtn');
+        var status = document.getElementById('status');
+
+        // 3) 웹소켓 echo server 연결
+        var ws = new WebSocket('wss://javascript.info/article/websocket/demo/hello');
+        console.log(ws)
+
+        // 웹소켓 생성시 자동으로 호출되는 open
+        ws.onopen = function(e){
+            console.log('connect websocket : ',e)
+            status.innerHTML+='<br><b style="color:blue;">websocket 연결</b>'
+        }
+
+        // 4) 멈추기 버튼을 클릭시 접속을 종료
+        stopBtn.addEventListener("click",function(){
+            console.log(ws.readyState);
+            console.log(WebSocket.OPEN);
+            if(ws.readyState==WebSocket.OPEN){
+                ws.close();
+            }
+        })
+
+        // 연결 종료시에는 server close 이벤트를 전달
+        // client는 이를 받아서 event 처리
+        // readyStatus:3
+        ws.onclose=function(e){
+            console.log("웹소켓 닫음", e);
+            var code = e.code;
+            var reason = e.reason;
+            var wsClean = e.wsClean;
+
+            if(wsClean){ // 정상 종료
+                status.innerHTML+='<br><b style="color:blue;">websocket 닫힘</b>';
+            } else {
+                status.innerHTML+='<br><b style="color:red;">websocket 닫힘</b>';
+                status.innerHTML+='<br><b style="color:blue;">reason'+reason+'</b>';
+                status.innerHTML+='<br><b style="color:blue;">code'+code+'</b>';
+            }
+        }
+
+        // 5) 웹소켓에서 error가 발생시 메시지 출력
+        ws.addEventListener('error', function(e){
+            console.log("websocket error : ", e)
+            status.innerHTML+='<br><b style="color:red;">웹소켓 에러 발생</b>';
+        })
+
+        // 6) sendBtn 클릭시 문자열 전달
+        sendBtn.addEventListener('click', function(){
+            var value = view.value;
+            ws.send(value);
+            
+            value = '';
+            view.focus();
+        })
+
+        view.addEventListener('keyup', function(e){
+            if(e.keyCode==13){
+                var value = view.value;
+                ws.send(value);
+
+                view.value='';
+                view.focus();
+            }
+        })
+
+        ws.addEventListener('message',function(e){
+            console.log('message : ', e);
+            status.innerHTML+='<br><b style="color:green;">'+e.data+'</b>';
+        })
+
+    }
+
+    // 1) init 함수 실행
+    window.addEventListener('load', init);
+    // window.onload = init()
+</script>
+<body>
+    <div class="card-body">
+        <h3>웹소켓</h3>
+        <br>
+        <input type="text" class="form-control" id="view">
+        <br>
+        <button class="btn btn-primary" id="sendBtn">SEND</button>
+        <button class="btn btn-primary" id="stopBtn">STOP</button>
+        <br>
+        <div id="status">웹소켓상태</div>
+
+    </div>
+</body>
+</html>

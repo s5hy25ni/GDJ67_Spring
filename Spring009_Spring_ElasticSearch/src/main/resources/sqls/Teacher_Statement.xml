@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.min.edu.model.mapper.TeacherDaoImpl">
+	<select id="subjectSearch" resultType="TeacherVO">
+	  <![CDATA[
+	      SELECT * FROM TEACHER WHERE (DBMS_LOB.INSTR(subject, #{subject}) > 0) OR (DBMS_LOB.INSTR(introduction, #{subject}) > 0)
+	    ]]>
+	</select>
+	
+	<select id="nicknameSearch" resultType="TeacherVO">
+		SELECT * FROM TEACHER WHERE NICKNAME LIKE CONCAT(#{nickname}, '%')
+	</select>
+	
+	<insert id="careerInsert">
+		INSERT INTO CAREERCERT (NAME, CONTACT, AFFILIATION, 
+								POSITION, PERIOD, JOB_DESC, 
+								ISSUER_NAME, ISSUER_CONTACT, CREATE_DATE, COMPANY_NAME)
+		VALUES (#{name},#{contact},#{affiliation},
+				#{position}, #{period}, #{job_desc}, 
+				#{issuer_name}, #{issuer_contact}, #{create_date}, #{company_name})
+	</insert>
+	
+</mapper>

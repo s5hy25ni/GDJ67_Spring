@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
-<!-- TODO 07_02 myBatis 설정 파일 -->
+<!-- TODO 07_02 MyBatis 설정 파일 -->
 <configuration>
 
-	<mappers>
-		<!-- TODO 09_03 myBatis Board Mapper 등록 -->
-		<mapper resource="sqls/Board_Statement.xml"/>
-		<!-- TODO 10_03 myBatis User Mapper 등록 -->
-		<mapper resource="sqls/User_Statement.xml"/>
-	</mappers>
+	<settings>
+		<setting name="mapUnderscoreToCamelCase" value="true"/>
+	</settings>
+	
+<mappers>
+	<!-- TODO 09_03 MyBatis Board Mapper 등록 -->
+	<mapper resource="sqls/Board_Statement.xml"/>
+	<!-- TODO 10_03 MyBatis Board Mapper 등록 -->
+	<mapper resource="sqls/User_Statement.xml"/>
+	<mapper resource="sqls/Test_Statement.xml"/>
+</mappers>
+
 </configuration>
